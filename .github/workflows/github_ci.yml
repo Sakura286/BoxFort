@@ -1,0 +1,24 @@
+name: Build Boxfort
+on: [push]
+env:
+  QEMU_LD_PREFIX: /usr/riscv64-linux-gnu
+jobs:
+  Cross-Build-to-riscv64:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: setup_script
+        run: |
+          sudo apt update
+          sudo apt install -y meson qemu-user g++-riscv64-linux-gnu gcc-riscv64-linux-gnu
+      - name: info_script
+        run: |
+          meson --version
+          ninja --version
+      - name: configure_script
+        run: meson setup --cross-file cross-config/amd64-riscv64.txt build
+      - name: compile_script
+        run: meson compile -C build
+      - name: test_script
+        run: meson test -C build

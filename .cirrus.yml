@@ -40,6 +40,21 @@ Alpine (gcc,aarch64)_task:
   setup_script: *alpine-arm-deps
   <<: *pipeline
 
+Ubuntu (gcc,riscv64_cross)_task:
+  container:
+    image: ubuntu:latest
+  env:
+    QEMU_LD_PREFIX: /usr/riscv64-linux-gnu
+  setup_script: |
+    apt update
+    apt install -y meson qemu-user g++-riscv64-linux-gnu gcc-riscv64-linux-gnu
+  info_script: |
+    meson --version
+    ninja --version
+  configure_script: meson setup --cross-file cross-config/amd64-riscv64.txt build
+  compile_script: meson compile -C build
+  test_script: meson test -C build
+
 MacOS_task:
   macos_instance:
     image: ghcr.io/cirruslabs/macos-ventura-base:latest
