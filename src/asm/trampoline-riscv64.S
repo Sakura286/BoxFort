@@ -27,6 +27,7 @@
 #ifdef ASSEMBLER_SUPPORTS_HIDDEN
 .hidden MANGLE(bxfi_trampoline)
 #endif
+.align 3
 .globl MANGLE(bxfi_trampoline)
 MANGLE(bxfi_trampoline):
     ld      a0, addr_data
@@ -41,7 +42,7 @@ MANGLE(bxfi_trampoline):
  *  'offset' is the length between `auipc` and `addr_data`.
  */
 
-.align 1
+.align 3
 
 #ifdef ASSEMBLER_SUPPORTS_HIDDEN
 .hidden MANGLE(bxfi_trampoline_addr)
