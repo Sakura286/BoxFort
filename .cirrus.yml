@@ -1,6 +1,8 @@
 Ubuntu_task:
   container:
     image: ubuntu:latest
+    cpu: 1
+    memory: 1G
   env:
     QEMU_LD_PREFIX: /usr/riscv64-linux-gnu
   setup_script: |
@@ -11,6 +13,6 @@ Ubuntu_task:
     ninja --version
   configure_script: meson setup --cross-file cross-config/amd64-riscv64.txt build
   compile_script: meson compile -C build
-  #test_script: meson test -C build
-  binaries_artifacts:
-    path: "build/**"
+  test_script: meson test -C build
+  #binaries_artifacts:
+    #path: "build/**"
