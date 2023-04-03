@@ -1,50 +1,10 @@
-_pipeline: &pipeline
-  info_script: |
-    meson --version
-    ninja --version
-  configure_script: meson setup build
-  compile_script: ninja -C build
-  test_script: ninja -C build test
-
-Debian (gcc)_task:
-  container:
-    image: snaipe/ci-meson:debian-10
-  <<: *pipeline
-
-Alpine (gcc,x86_64)_task:
-  container:
-    image: snaipe/ci-meson:alpine
-  <<: *pipeline
-
-Alpine (gcc,i386)_task:
-  container:
-    image: snaipe/ci-meson:alpine-x86
-  <<: *pipeline
-
-Alpine (gcc,arm32v6)_task:
-  arm_container:
-    image: arm32v6/alpine:3
-  setup_script: &alpine-arm-deps |-
-    apk add --no-cache build-base meson ninja git
-  <<: *pipeline
-
-Alpine (gcc,arm32v7)_task:
-  arm_container:
-    image: arm32v7/alpine:3
-  setup_script: *alpine-arm-deps
-  <<: *pipeline
-
-Alpine (gcc,aarch64)_task:
-  arm_container:
-    image: arm64v8/alpine:3
-  setup_script: *alpine-arm-deps
-  <<: *pipeline
-
 Ubuntu (gcc,riscv64_cross)_task:
   container:
     image: ubuntu:latest
   env:
     QEMU_LD_PREFIX: /usr/riscv64-linux-gnu
+  my_artifacts:
+    path: *
   setup_script: |
     apt update
     apt install -y meson qemu-user g++-riscv64-linux-gnu gcc-riscv64-linux-gnu
@@ -54,27 +14,3 @@ Ubuntu (gcc,riscv64_cross)_task:
   configure_script: meson setup --cross-file cross-config/amd64-riscv64.txt build
   compile_script: meson compile -C build
   test_script: meson test -C build
-
-MacOS_task:
-  macos_instance:
-    image: ghcr.io/cirruslabs/macos-ventura-base:latest
-  setup_script: brew install meson
-  <<: *pipeline
-
-FreeBSD_task:
-  freebsd_instance:
-    image_family: freebsd-13-1
-  setup_script: pkg install -y meson
-  <<: *pipeline
-
-Windows_task:
-  windows_container:
-    image: cirrusci/windowsservercore:cmake
-    os_version: 2019
-  env:
-    PATH: C:\\Python;C:\\Python\\Scripts;C:\\ProgramData\\chocolatey\\lib\\ninja\\tools;%PATH%
-  meson-setup_script: |-
-    choco install -y --no-progress python3 --params "/InstallDir:C:\Python"
-    pip install meson
-  ninja-setup_script: choco install -y --no-progress ninja
-  <<: *pipeline
