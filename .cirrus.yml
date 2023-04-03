@@ -1,4 +1,4 @@
-Ubuntu (gcc,riscv64_cross)_task:
+Ubuntu_task:
   container:
     image: ubuntu:latest
   env:
