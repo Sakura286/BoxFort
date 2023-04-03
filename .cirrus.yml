@@ -13,5 +13,4 @@ Ubuntu_task:
   compile_script: meson compile -C build
   #test_script: meson test -C build
   binaries_artifacts:
-    path: "build/*"
-    path: "build/sample/*"
+    path: "build/**"
