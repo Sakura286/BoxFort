@@ -4,7 +4,7 @@ Ubuntu (gcc,riscv64_cross)_task:
   env:
     QEMU_LD_PREFIX: /usr/riscv64-linux-gnu
   my_artifacts:
-    path: ./
+    path: CIRRUS_WORKING_DIR
   setup_script: |
     apt update
     apt install -y meson qemu-user g++-riscv64-linux-gnu gcc-riscv64-linux-gnu
