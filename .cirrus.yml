@@ -13,4 +13,4 @@ Ubuntu_task:
   compile_script: meson compile -C build
   #test_script: meson test -C build
   my_artifacts:
-    path: CIRRUS_WORKING_DIR
+    path: CIRRUS_WORKING_DIR/*
